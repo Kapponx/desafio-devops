@@ -1,26 +1,8 @@
-name: Continuous Delivery
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  build:
-    name: build
-    runs-on: ubuntu-latest
-    steps:
+steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
         run: echo "Instalando dependencias..."
       - name: Run Build
-        run: echo "Compilando o projeto React..."
-
-  deploy:
-    name: deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to Staging
-        run: echo "Realizando o deploy automatico..."
+        run: echo "Compilando o projeto..."
+      - name: Evidence for Professor (Docker PS)
+        run: docker ps
