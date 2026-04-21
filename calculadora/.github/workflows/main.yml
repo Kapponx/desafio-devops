@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Run Build
+        run: npm run build
+
+  deploy:
+    name: Deploy Simulation
+    needs: build # Isso garante que o deploy só comece se o build passar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploying to Stage
+        run: echo "Simulando deploy da aplicacao React do Gabriel..."
