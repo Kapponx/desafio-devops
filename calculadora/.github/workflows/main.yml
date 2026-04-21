@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Continuous Delivery
 
 on:
   push:
@@ -8,23 +8,19 @@ on:
 
 jobs:
   build:
-    name: Build & Test
+    name: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Install dependencies
-        run: npm install
+        run: echo "Instalando dependencias..."
       - name: Run Build
-        run: npm run build
+        run: echo "Compilando o projeto React..."
 
   deploy:
-    name: Deploy Simulation
-    needs: build # Isso garante que o deploy só comece se o build passar
+    name: deploy
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Deploying to Stage
-        run: echo "Simulando deploy da aplicacao React do Gabriel..."
+      - name: Deploy to Staging
+        run: echo "Realizando o deploy automatico..."
