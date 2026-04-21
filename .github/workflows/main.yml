@@ -1,0 +1,26 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: echo "Instalando dependencias do React..."
+      - name: Run Build
+        run: echo "Compilando o projeto..."
+
+  deploy:
+    name: deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Simulation
+        run: echo "Realizando deploy para o ambiente de staging..."
