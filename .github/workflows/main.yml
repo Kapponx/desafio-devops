@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -19,12 +20,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./calculadora 
 
       - name: Run Unit Tests
         run: npm test -- --watchAll=false
+        working-directory: ./calculadora
 
       - name: Status Alert
-        if: always() # Isso garante que o alerta rode mesmo se o teste falhar
+        if: always()
         run: |
           echo "Status da execucao: ${{ job.status }}"
-          echo "Enviando alerta para o desenvolvedor Kapponx..."
+          echo "Alerta enviado para o desenvolvedor Kapponx."
