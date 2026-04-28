@@ -1,4 +1,4 @@
-name: Continuous Delivery
+name: CI/CD com Testes e Alertas
 
 on:
   push:
@@ -7,22 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    name: build
+  build_and_test:
+    name: Build e Testes Unitarios
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: echo "Instalando dependencias..."
-      - name: Run Build
-        run: echo "Compilando o projeto..."
-      - name: Evidence for Professor (Docker PS)
-        run: docker ps
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-  deploy:
-    name: deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy Simulation
-        run: echo "Realizando o deploy automatico..."
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Unit Tests
+        run: npm test -- --watchAll=false
+
+      - name: Status Alert
+        if: always() # Isso garante que o alerta rode mesmo se o teste falhar
+        run: |
+          echo "Status da execucao: ${{ job.status }}"
+          echo "Enviando alerta para o desenvolvedor Kapponx..."
