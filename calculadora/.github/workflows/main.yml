@@ -1,8 +1,35 @@
-steps:
+name: CI/CD com Testes e Alertas
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    name: Build e Testes Unitarios
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
       - name: Install dependencies
-        run: echo "Instalando dependencias..."
-      - name: Run Build
-        run: echo "Compilando o projeto..."
-      - name: Evidence for Professor (Docker PS)
-        run: docker ps
+        # O comando abaixo entra na pasta calculadora antes de instalar
+        run: npm install
+        working-directory: ./calculadora 
+
+      - name: Run Unit Tests
+        # O comando abaixo entra na pasta calculadora antes de testar
+        run: npm test -- --watchAll=false
+        working-directory: ./calculadora
+
+      - name: Status Alert
+        if: always()
+        run: |
+          echo "Status da execucao: ${{ job.status }}"
+          echo "Alerta enviado para o desenvolvedor Kapponx sobre o status do workflow."
